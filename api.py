@@ -26,7 +26,7 @@ def initialiser_partie(idul, jeton):
         raise ConnectionError()
     
 
-    def jouer_un_coup(id_partie, origine, direction, idul, jeton):
+def jouer_un_coup(id_partie, origine, direction, idul, jeton):
     URL = f'https://pax.ulaval.ca/quixo/api/a24/partie/{id_partie}/'
     payload = {
         "origine": origine,
@@ -43,3 +43,14 @@ def initialiser_partie(idul, jeton):
         if gagnant:
             raise StopIteration(gagnant)
         return (id_partie, etat, etat.get('joueurs'))
+    
+    elif response.status_code == 401:
+        message = response.json().get('message')
+        raise PermissionError(message)
+    
+    elif response.status_code == 406:
+        message = response.json().get('message')
+        raise RuntimeError(message)
+    
+    else:
+        raise ConnectionError()
