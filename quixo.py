@@ -1,3 +1,5 @@
+import argparse
+
 def formater_entête(joueurs):
     """
     Formate la légende des joueurs en art ASCII.
